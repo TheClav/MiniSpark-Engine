@@ -1,0 +1,18 @@
+Compile all minispark applications with `make`. You can run these from
+the `bin/` directory.
+
+linecount (parallel `wc -l`) linecount files ... :
+(uses MAP with count)
+./linecount ../sample-files/one.txt ../sample-files/two.txt
+
+catfiles (parallel `cat`) cat files ... :
+(uses MAP with print)
+./catfiles ../sample-files/one.txt ../sample-files/two.txt
+
+grep (parallel `grep`) grep WORD files ... :
+(uses MAP and FILTER with print)
+./grep one ../sample-files/one.txt ../sample-files/two.txt
+
+sumjoin (sum column m on key n) sumjoin N M files ...:
+(uses MAP and JOIN with print. Uses PartitionBy if more than 2 input files)
+./sumjoin 0 1 ../sample-files/vals1.txt ../sample-files/vals2.txt

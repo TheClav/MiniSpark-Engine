@@ -1,0 +1,1 @@
+./tests/3.tmp one ./test_files/one.txt ./test_files/two.txt ./test_files/three.txt

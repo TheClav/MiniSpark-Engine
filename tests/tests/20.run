@@ -1,0 +1,1 @@
+./tests/20.tmp | python3 ./tests/20checker.py

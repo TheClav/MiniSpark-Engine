@@ -1,0 +1,7 @@
+*.o
+*.a
+*.tar
+bin/
+*~
+*.log
+tests/tests-out/
