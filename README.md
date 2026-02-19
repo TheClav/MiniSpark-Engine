@@ -33,11 +33,19 @@ Immutable, partitioned data collections that form the nodes of the processing gr
 - `count(rdd)` - materialize and return total element count
 - `print(rdd, printer)` - materialize and print each element
 
+**Simple DAG example** - `RDDFromFiles` creates one partition per file, each holding a `FILE*`. A `map` transformation applies the mapper function to each partition lazily. Nothing executes until `count` or `print` is called.
+
+![Simple DAG](graphics/getline.png)
+
 **Thread Pool**
 Worker count is set to the number of available CPU cores via `sched_getaffinity`. The pool uses a circular bounded buffer protected by `pthread_mutex_t`, with `pthread_cond_t` for blocking workers when the queue is empty and waking them when work arrives. The main thread blocks until all in-flight partitions drain.
 
 **DAG Scheduler**
 A recursive post-order traversal resolves dependencies before submitting tasks. No partition is enqueued until all partitions it depends on have been materialized, eliminating the deadlock risk of letting blocked workers hold pool threads.
+
+The diagram below shows a wide-dependency DAG: two independent file pipelines (`map` -> `partitionBy`) run concurrently, then converge at a hash-partitioned `join`. RDD3 and RDD7 must both fully materialize before RDD8 can begin.
+
+![Complex DAG](graphics/join.png)
 
 **Metrics Monitor**
 A dedicated monitoring thread drains a separate lock-protected metrics queue. Each completed task records creation time, scheduling time, and execution duration to `metrics.log` at microsecond resolution using `clock_gettime(CLOCK_MONOTONIC)`.

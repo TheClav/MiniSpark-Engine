@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wextra -O0 -g -pthread -I$(SOL_DIR) -I$(LIB_DIR)
 
 APP_DIR = applications
 LIB_DIR = lib
-SOL_DIR = solution
+SOL_DIR = src
 BIN_DIR = bin
 
 PROGRAMS = linecount cat grep grepcount sumjoin concurrency
